@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A static landing page for Sable & Co. Atelier No. 02 — Linen Candle. Responsive, no backend, no vendor lock-in. Design and code: Aleksandar Tonev (spec project).">
+  <meta name="author" content="Aleksandar Tonev">
+  <meta name="robots" content="index, follow">
+  <title>Landing Page — Sable &amp; Co. · Atelier No. 02 | Aleksandar Tonev</title>
+  <link rel="canonical" href="https://aleksandar-tonev.github.io/Portfolio/landing-page-standalone-sable-co.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23055D82'/><text x='50' y='68' font-family='serif' font-size='46' font-weight='700' fill='%23FFF7F3' text-anchor='middle'>AT</text></svg>">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Landing Page — Sable &amp; Co. · Atelier No. 02">
+  <meta property="og:description" content="A static landing page for Sable & Co. Atelier No. 02 — Linen Candle. Responsive, no backend, no vendor lock-in. Design and code: Aleksandar Tonev (spec project).">
+  <meta property="og:url" content="https://aleksandar-tonev.github.io/Portfolio/landing-page-standalone-sable-co.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://aleksandar-tonev.github.io/Portfolio/images/og-sable-landing-page.jpg?v=2">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Hands lighting a terracotta candle vessel with a match, warm natural light, beside the Sable &amp; Co. logo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Landing Page &mdash; Sable &amp; Co. &middot; Atelier No. 02">
+  <meta name="twitter:description" content="A static landing page for Sable &amp; Co. Atelier No. 02 — Linen Candle. Responsive, no backend, no vendor lock-in. Design and code: Aleksandar Tonev (spec project).">
+  <meta name="twitter:image" content="https://aleksandar-tonev.github.io/Portfolio/images/og-sable-landing-page.jpg?v=2">
+  <meta name="twitter:image:alt" content="Hands lighting a terracotta candle vessel with a match, warm natural light, beside the Sable &amp; Co. logo">
+  <!-- Viber / WhatsApp / iMessage / Telegram -->
+  <meta property="og:image:secure_url" content="https://aleksandar-tonev.github.io/Portfolio/images/og-sable-landing-page.jpg?v=2">
+  <link rel="image_src" href="https://aleksandar-tonev.github.io/Portfolio/images/og-sable-landing-page.jpg">
+
+  <!-- Шрифтове: self-hosted, без външен CDN, без данни към Google -->
+  <link rel="stylesheet" href="fonts.css">
+
+  <!-- tokens.css ПЪРВИ — и преди inline style блока отдолу,
+       иначе локален :root печели по source order -->
+
+  <style>
+
+  /* ── Portfolio chrome (self-contained, без style.css) ── */
+  /* Споделените токени идват от tokens.css. Тук остава САМО това,
+     което съществува единствено в тази страница. */
+  :root {
+    /* Лентата: Warm Stone −9% светлота. #9E7B5A дава 3.86:1 с бял текст
+       (под WCAG AA); #907052 дава 4.54:1 при същия тон. Смени на
+       #058255, ако предпочиташ портфолио зеленото. */
+    --sc-nav-bg: #907052;
+  }
+  /* Без style.css тук няма глобален reset. Без него .sc-fixed-btn е content-box,
+     а <button> носи браузърна padding: 1px 6px — ✕ излиза по-широк от АТ. */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  /* ── Page transition bar — 2px бяла линия горе, прибира се за 800ms.
+        Копие от style.css, който тази страница не зарежда. ── */
+  .page-transition-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 2px;
+    background: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    z-index: 201;   /* над секционната лента (100) и фикс бутоните (200) */
+    pointer-events: none;
+  }
+  .page-transition-bar--in {
+    animation: page-bar-retract 800ms ease-in-out forwards;
+  }
+  .page-transition-bar--gone { display: none; }
+  @keyframes page-bar-retract {
+    0%   { transform: scaleX(1); opacity: 1; }
+    99%  { transform: scaleX(0); opacity: 1; }
+    100% { transform: scaleX(0); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition-bar { display: none; }
+  }
+
+  body { margin: 0; background: var(--color-bg); }
+  button { font: inherit; padding: 0; }
+
+  .sc-visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  section[id^="sc-"], div[id^="sc-"][id$="-h"] { scroll-margin-top: calc(44px + 68px + 2.5rem); }
+
+  .sc-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  .hamburger-btn {
+    background: none; border: 0; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0;
+  }
+  .hamburger-btn span { display: block; height: 2px; background: #fff; border-radius: 2px; }
+  .demo-root { isolation: isolate; position: relative; z-index: 90; }  /* контекстът (вкл. фикс Shop Now лентата) над контакт секцията, която е сестра след него */
+
+  /* Демото носи собствен fixed nav (68px, top:0). Той се показваше
+     изпод портфолио лентата като кремава ивица + висящ "SHOP NOW".
+     Смъква се под нея. */
+  .demo-root [data-nav] { top: 44px !important; }
+  .sc-fixed-btns { top: calc(44px + 68px + 1rem); }
+
+/* ── Section Nav ─────────────────────────────────────── */
+  .sc-section-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--sc-nav-bg, #907052);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    max-width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+  .sc-section-nav::-webkit-scrollbar { display: none; }
+
+  .sc-section-nav-inner {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-lg, 2rem);
+    height: 44px;
+    gap: 0;
+    min-width: 0;
+  }
+  .sc-section-nav-inner::-webkit-scrollbar { display: none; }
+
+  .sc-section-nav-root {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    font-family: var(--font-body, 'DM Sans', sans-serif);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    padding-right: 0.75rem; /* паритет с .sc-section-nav-link padding — чертата диша еднакво от двете страни, като в crumb лентата */
+    transition: color 0.2s;
+  }
+  .sc-section-nav-root:hover { color: rgba(255,255,255,0.8); }
+
+  .sc-section-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sc-section-nav-links::-webkit-scrollbar { display: none; }
+
+  .sc-section-nav-link {
+    flex-shrink: 0;
+    font-family: var(--font-body, 'DM Sans', sans-serif);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 0 0.75rem;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: background 0.2s;
+    opacity: 1;
+  }
+  .sc-section-nav-link:hover { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  .sc-section-nav-link.active {
+    opacity: 1;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 4px 4px 0 0;
+  }
+
+
+  /* ── Стрелки: навигация между секциите на текущата страница.
+        Спецификацията е взета едно към едно от .crumb-arrow / .crumb-divider
+        в project.css, за да четат еднакво в двете ленти. ── */
+  .sc-nav-divider {
+    flex: 0 0 auto;
+    align-self: center;
+    width: 2px;
+    height: 16px;
+    margin: 0 0.85rem;
+    background: #ffffff;
+    border-radius: 1px;
+  }
+
+  /* Мобилно — паритет с .crumb-links .crumb-divider в project.css */
+  @media (max-width: 640px) {
+    .sc-nav-divider {
+      margin: 0 0.55rem;
+      height: 14px;
+    }
+  }
+
+  .sc-section-nav-arrows,
+  .sc-section-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .sc-section-nav-arrow {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 12px;
+    color: #fff;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+  .sc-section-nav-arrow:hover:not([aria-disabled="true"]) {
+    box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.7);
+  }
+  .sc-section-nav-arrow:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+  }
+  .sc-section-nav-arrow[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
+  .arrow-glyph {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  /* Бяла черта — показва активната секция */
+  .sc-section-nav-indicator {
+    height: 3px;
+    z-index: 3;
+    background: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    transition: left 0.25s ease, width 0.25s ease;
+    pointer-events: none;
+  }
+
+  .sc-section-nav { position: sticky; top: 0; }
+
+  /* ── Фиксирани бутони горе вляво ────────────────────── */
+  /* Контейнер за фиксираните бутони — хоризонтално, ✕ преди АТ */
+  .sc-fixed-btns {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+  }
+  /* Десктоп (широк) — X/AT се връщат на старото плаващо място; логото вече е избутано навътре и не се застъпват */
+  @media (min-width: 1340px) {
+    .sc-fixed-btns { position: static; top: auto; left: auto; margin-right: 0.75rem; }
+  }
+
+  .sc-fixed-btn {
+    width: 1.59rem;
+    height: 1.59rem;
+    flex: 0 0 auto;
+    padding: 0;
+    font-family: var(--font-body, 'DM Sans', sans-serif);
+    border-radius: 50%;
+    background: var(--color-bg, #FFF7F3);
+    border: none;
+    color: var(--color-accent, #823205);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    line-height: 1;
+    box-shadow: 0 0 0 0 rgba(130, 50, 5, 0);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .sc-fixed-close {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .sc-fixed-home {
+    font-family: var(--font-heading, 'Cormorant Garamond', serif);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .sc-fixed-btn:hover {
+    background: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 0 8px 2px rgba(130, 50, 5, 0.28),
+                0 0 16px 4px rgba(130, 50, 5, 0.12);
+  }
+
+  .sc-fixed-btn:focus-visible {
+    outline: 3px solid var(--color-accent, #823205);
+    outline-offset: 2px;
+  }
+
+  /* Хамбургер в section nav — само <1100px */
+  .sc-hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 44px;
+    gap: 4px;
+    margin-left: auto;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .sc-hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .sc-section-nav.menu-open .sc-hamburger-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .sc-section-nav.menu-open .sc-hamburger-btn span:nth-child(2) { opacity: 0; }
+  .sc-section-nav.menu-open .sc-hamburger-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  @media (min-width: 1100px) {
+    .sc-hamburger-btn { display: none !important; }
+  }
+  @media (max-width: 1099px) {
+    .sc-section-nav { overflow: visible; }
+    .sc-section-nav-inner { position: relative; }
+    .sc-section-nav .sc-nav-divider,
+    .sc-section-nav-arrows,
+    .sc-section-nav-indicator { display: none; }
+    .sc-section-nav-links {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex: none;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: visible;
+      background: var(--sc-nav-bg, #907052);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+      padding: 0.4rem 0;
+      display: none;
+    }
+    .sc-section-nav.menu-open .sc-section-nav-links { display: flex; }
+    .sc-section-nav-link { width: 100%; height: auto; padding: 0.85rem var(--space-lg, 2rem); }
+    .sc-fixed-btn { width: 1.37rem; height: 1.37rem; }
+  }
+
+  /* Мобилен — бутоните не бива да застъпват заглавието */
+  @media (max-width: 640px) {
+    .sc-fixed-btns {
+      top: calc(44px + 0.6rem);
+      left: 1rem;
+      gap: 0.4rem;
+    }
+    .sc-fixed-btn {
+      width: 1.37rem;
+      height: 1.37rem;
+    }
+    .sc-fixed-home { font-size: 0.68rem; }
+    /* Заглавието слиза под бутоните */
+    }
+  
+  </style>
+
+  <style>
+/* ── Демо: собствени токени и стилове ── */
+/* Sable & Co. — Font Face Declarations */
+
+/* Sable & Co. — Color Tokens */
+
+.demo-root {
+  /* ── Brand Palette ── */
+  /* Три от тези имена се сблъскваха с tokens.css. Работеше — .demo-root е
+     предшественик и печели за поддървото си — но AT chrome-ът в СЪЩИЯ файл
+     чете същите имена от tokens.css (body и .sc-fixed-btn горе). Едно име,
+     две системи, нула предупреждения. Преименувани по семейната логика тук:
+       color-secondary -> color-stone      (то Е Warm Stone; при anchor/terracotta/sand/linen)
+       color-bg        -> color-bg-base    (при -subtle / -surface / -inverse)
+       color-text      -> color-text-base  (при -primary / -secondary / -muted / -inverse)
+     Не връщай късите имена. */
+  --color-anchor:      #4A3728;   /* Deep Roasted Oak — PMS 4635 C */
+  --color-stone:   #9E7B5A;   /* Warm Stone — PMS 7527 C */
+  --color-terracotta:  #C17A4E;   /* Terracotta — accent / CTA */
+  --color-sand:        #E2CDB5;   /* Warm Sand — backgrounds / dividers */
+  --color-linen:       #F7F1E8;   /* Linen — primary background */
+  --color-text-base:        #1E1510;   /* Near-Black Warm — body text */
+
+  /* ── Tints ── */
+  --color-anchor-10:   #F0EBE7;
+  --color-anchor-20:   #D5C7BE;
+  --color-anchor-40:   #9E8070;
+  --color-anchor-60:   #6E5245;
+  --color-anchor-80:   #4A3728;
+
+  --color-terracotta-10: #FAF0E9;
+  --color-terracotta-20: #EDD3BC;
+  --color-terracotta-40: #D9A882;
+  --color-terracotta-60: #C17A4E;
+  --color-terracotta-80: #A05E33;
+
+  /* ── Semantic Aliases ── */
+  --color-bg-base:          var(--color-linen);
+  --color-bg-subtle:   var(--color-sand);
+  --color-bg-surface:  #FFFFFF;
+  --color-bg-inverse:  var(--color-anchor);
+
+  --color-text-primary:   var(--color-text-base);
+  --color-text-secondary: var(--color-stone);
+  --color-text-muted:     #7A6253;
+  --color-text-inverse:   var(--color-linen);
+  --color-text-on-cta:    var(--color-linen);
+
+  --color-cta:          var(--color-terracotta);
+  --color-cta-hover:    #A86540;
+  --color-cta-active:   #8F5233;
+
+  --color-border:       var(--color-sand);
+  --color-border-subtle: rgba(74, 55, 40, 0.12);
+  --color-border-strong: var(--color-anchor);
+
+  --color-divider:      var(--color-sand);
+
+  /* ── Overlay ── */
+  --color-overlay-60:  rgba(30, 21, 16, 0.6);
+  --color-overlay-40:  rgba(30, 21, 16, 0.4);
+  --color-overlay-20:  rgba(30, 21, 16, 0.2);
+}
+
+/* Sable & Co. — Typography Tokens */
+/* Primary fonts: Fraunces (display / serif) + Manrope (body / sans).        */
+/* Официални primary от Brand Guidelines v1.1 — SIL OFL, без license дълг.    */
+/* Type direction reference: Canela-class serif hybrids. WONK = 0 винаги.    */
+
+.demo-root {
+  /* ── Families ── */
+  --font-serif:   'Fraunces', Georgia, serif;      /* Display / headlines */
+  --font-sans:    'Manrope', system-ui, sans-serif; /* Body / functional   */
+
+  /* ── Weights ── */
+  --font-weight-thin:    100;
+  --font-weight-light:   300;
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold:600;
+
+  /* ── Scale (digital) ── */
+  --text-hero:      clamp(48px, 7vw, 72px);
+  --text-section:   clamp(28px, 4vw, 36px);
+  --text-heading:   clamp(22px, 3vw, 28px);
+  --text-subhead:   16px;
+  --text-body:      15px;
+  --text-small:     13px;
+  --text-micro:     11px;
+
+  /* ── Line Heights ── */
+  --leading-tight:  1.15;
+  --leading-snug:   1.3;
+  --leading-normal: 1.55;
+  --leading-loose:  1.75;
+
+  /* ── Tracking ── */
+  --tracking-display:  0.06em;   /* +60 in points = ~0.06em */
+  --tracking-tagline:  0.08em;   /* +80 */
+  --tracking-label:    0.1em;    /* Labels / all-caps */
+  --tracking-body:     0.015em;  /* +15 subtle */
+  --tracking-none:     0;
+
+  /* ── Optical Size ── */
+  /* Fraunces е variable с opsz ос 9–144.
+     Кавичките бяха двойни — това правеше стойността стринг и
+     font-variation-settings я изхвърляше мълчаливо. */
+  --opsz-display:  'opsz' 72;
+  --opsz-text:     'opsz' 14;
+}
+
+/* Без това браузърът кара на font-optical-sizing: auto и връзва opsz
+   за font-size. При clamp(56px, 9vw, 96px) това дава opsz ~96, където
+   контрастът на Fraunces скача до hairline тънки щрихи — извън brand тона.
+   72 е твоята собствена стойност от токена — не я измислям аз. */
+.demo-root h2,
+.demo-root blockquote {
+  font-optical-sizing: none;
+  /* wght ТРЯБВА да е тук. Без нея font-variation-settings връща оста на
+     дефолта на шрифта (400) и глъта font-weight: 300 от inline.
+     Спецификацията казва, че не бива; браузърите го правят.
+     Цената: теглото вече е тук, не в inline стила. Промениш ли
+     font-weight на h2 отгоре — няма да се случи нищо. Променяй го тук. */
+  font-variation-settings: var(--opsz-display), 'wght' 300;
+}
+
+/* Sable & Co. — Spacing Tokens */
+/* 8px base unit. Generous whitespace is on-brand — "breathing room." */
+
+.demo-root {
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --space-40: 160px;
+  --space-48: 192px;
+
+  /* ── Semantic ── */
+  --gap-xs:   var(--space-2);
+  --gap-sm:   var(--space-3);
+  --gap-md:   var(--space-6);
+  --gap-lg:   var(--space-10);
+  --gap-xl:   var(--space-16);
+  --gap-2xl:  var(--space-24);
+  --gap-3xl:  var(--space-32);
+
+  /* ── Layout ── */
+  --container-sm:  640px;
+  --container-md:  860px;
+  --container-lg: 1100px;
+  --container-xl: 1360px;
+
+  --page-gutter-sm:  var(--space-6);
+  --page-gutter-md:  var(--space-12);
+  --page-gutter-lg:  var(--space-20);
+
+  /* ── Component ── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:  16px;
+  --radius-pill: 999px;
+  --radius-none: 0;
+
+  --border-width-thin:   1px;
+  --border-width-base:   1.5px;
+  --border-width-thick:  2px;
+}
+
+/* Sable & Co. — Effects Tokens */
+/* Shadows: warm, soft, diffuse — never punchy or cold.   */
+/* Motion: unhurried, gentle — matching brand personality. */
+
+.demo-root {
+  /* ── Shadows ── */
+  /* Warm-tinted shadows (anchor color at low opacity) */
+  --shadow-xs:  0 1px 2px rgba(74, 55, 40, 0.06);
+  --shadow-sm:  0 2px 6px rgba(74, 55, 40, 0.08), 0 1px 2px rgba(74, 55, 40, 0.05);
+  --shadow-md:  0 4px 16px rgba(74, 55, 40, 0.10), 0 2px 4px rgba(74, 55, 40, 0.06);
+  --shadow-lg:  0 8px 32px rgba(74, 55, 40, 0.12), 0 4px 8px rgba(74, 55, 40, 0.06);
+  --shadow-xl:  0 16px 56px rgba(74, 55, 40, 0.14), 0 6px 12px rgba(74, 55, 40, 0.07);
+
+  /* Card shadow — slightly lifted, warm */
+  --shadow-card:  0 2px 12px rgba(74, 55, 40, 0.09), 0 1px 3px rgba(74, 55, 40, 0.05);
+
+  /* ── Blur ── */
+  /* Used sparingly — only for overlays and frosted contexts */
+  --blur-sm:  blur(4px); /* @kind other */
+  --blur-md:  blur(12px); /* @kind other */
+  --blur-lg:  blur(24px); /* @kind other */
+
+  /* ── Transitions ── */
+  /* Unhurried — slightly longer than typical */
+  /* fast и slow ги изтрих: 0 употреби, и се сблъскваха с tokens.css. */
+  --transition-base:   220ms ease; /* @kind other */
+  --transition-gentle: 500ms cubic-bezier(0.25, 0.1, 0.25, 1); /* @kind other */
+
+  /* ── Easing ── */
+  --ease-out-soft:    cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-in-out-soft: cubic-bezier(0.45, 0, 0.55, 1); /* @kind other */
+
+  /* ── Opacity ── */
+  --opacity-dim:      0.6; /* @kind other */
+  --opacity-muted:    0.4; /* @kind other */
+  --opacity-ghost:    0.2; /* @kind other */
+}
+
+/* Sable & Co. — Base / Reset */
+
+.demo-root *, .demo-root *::before, .demo-root *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+}
+.demo-root {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-weight-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-wrap: pretty;
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+::selection {
+  background-color: var(--color-sand);
+  color: var(--color-anchor);
+}
+  /* ── Тук стоеше второ, дословно идентично копие на целия Sable design
+        system: 234 реда (font-face, .demo-root токени, type, spacing,
+        effects, base). Правилата бяха еднакви → последното печелеше →
+        нула визуален ефект. Изтрито. Ако генерираш този блок наново,
+        внимавай да не конкатенираш системата два пъти. ── */
+
+    .demo-root *, .demo-root *::before, .demo-root *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+.demo-root { margin: 0; background: #F7F1E8; }
+    .demo-root img { display: block; }
+  </style>
+<style>/* #14 — nav cleanup */ .sc-nav-divider, .sc-section-nav-indicator { display: none !important; }</style>
+<style>/* т.4 — пълен drawer CSS (страницата не зарежда style.css/section-nav.css) + Sable кафяв */
+.hamburger-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 450; opacity: 0; transition: opacity .3s; }
+.hamburger-overlay.open { opacity: 1; }
+.hamburger-drawer[hidden], .hamburger-overlay[hidden] { display: none !important; }
+.hamburger-drawer { position: fixed; top: 0; right: 0; width: min(320px, 80vw); height: 100%; background: #4A3728; z-index: 500; display: flex; flex-direction: column; padding: calc(64px + 1rem) 2rem 2rem; gap: .25rem; transform: translateX(100%); transition: transform .32s ease; overflow-y: auto; }
+.hamburger-drawer.open { transform: translateX(0); }
+.hamburger-drawer a { color: #fff; font-family: var(--font-body, 'DM Sans', sans-serif); font-size: 1rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; padding: .85rem .5rem; border-bottom: 1px solid rgba(255,255,255,.12); }
+.hamburger-drawer a:hover { background: rgba(255,255,255,.1); }
+.drawer-close { position: absolute; top: 12px; right: 14px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: none; border: 0; color: #fff; font-size: 1.6rem; line-height: 1; cursor: pointer; padding: 0; }
+.hamburger-btn span { transition: transform .3s, opacity .3s; }
+.hamburger-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.sc-fixed-btn{ box-sizing:border-box; }</style>
+<style>/* Долна мобилна навигация — зелена, само <768px (страницата не зарежда style.css) */
+.nav-bottom{ display:none; position:fixed; bottom:0; left:0; right:0; height:64px; background:#058255; justify-content:space-around; align-items:center; z-index:120; padding-bottom:env(safe-area-inset-bottom); box-shadow:0 -2px 16px rgba(5,130,85,0.2); }
+.nav-bottom a{ display:flex; flex-direction:column; align-items:center; gap:3px; color:#fff; opacity:.55; font-family:var(--font-body,'DM Sans',sans-serif); font-size:.6rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; text-decoration:none; transition:opacity .15s; padding:4px; }
+.nav-bottom a:hover,.nav-bottom a.active{ opacity:1; }
+.nav-bottom a svg{ width:20px; height:20px; stroke:currentColor; }
+@media (max-width:767px){ .nav-bottom{ display:flex; } body{ padding-bottom:64px; } }
+</style>
+</head>
+<body>
+
+  <nav class="sc-section-nav" id="sc-section-nav" aria-label="Section navigation">
+    <div class="sc-section-nav-inner">
+      <div class="sc-fixed-btns">
+        <button class="sc-fixed-btn sc-fixed-close" aria-label="Close preview" onclick="window.history.back()">✕</button>
+      </div>
+      <a href="index.html?tab=brand#projects" class="sc-section-nav-root" aria-label="To Brand Systems">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Brand Systems
+      </a>
+      <span class="sc-nav-divider" aria-hidden="true"></span>
+      <div class="sc-section-nav-links">
+        <a href="#sc-hero-h" class="sc-section-nav-link" data-section="sc-hero-h">01 Hero</a>
+        <a href="#sc-value-h" class="sc-section-nav-link" data-section="sc-value-h">02 Value</a>
+        <a href="#sc-ritual-h" class="sc-section-nav-link" data-section="sc-ritual-h">03 Ritual</a>
+        <a href="#sc-material-h" class="sc-section-nav-link" data-section="sc-material-h">04 Material</a>
+        <a href="#sc-still-h" class="sc-section-nav-link" data-section="sc-still-h">05 Still Life</a>
+        <a href="#sc-cta-h" class="sc-section-nav-link" data-section="sc-cta-h">06 Order</a>
+      </div>
+      <span class="sc-nav-divider" aria-hidden="true"></span>
+      <div class="sc-section-nav-arrows">
+        <button type="button" class="sc-section-nav-arrow" data-sc-prev
+                aria-label="Previous section"><svg class="arrow-glyph" width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="7" x2="3" y2="7"/><polyline points="9 1 3 7 9 13"/></svg></button>
+        <button type="button" class="sc-section-nav-arrow" data-sc-next
+                aria-label="Next section"><svg class="arrow-glyph" width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" y1="7" x2="17" y2="7"/><polyline points="11 1 17 7 11 13"/></svg></button>
+      </div>
+      <button type="button" class="hamburger-btn sc-hamburger-btn" aria-label="Menu" aria-expanded="false" aria-controls="hamburger-drawer"><span></span><span></span><span></span></button>
+    </div>
+    <div class="sc-section-nav-indicator" id="sc-nav-indicator"></div>
+  </nav>
+
+  <div class="hamburger-overlay" hidden></div>
+  <nav class="hamburger-drawer" id="hamburger-drawer" aria-label="Mobile menu" hidden>
+    <button type="button" class="drawer-close" aria-label="Close menu">✕</button>
+    <a href="#sc-hero-h">01 Hero</a>
+    <a href="#sc-value-h">02 Value</a>
+    <a href="#sc-ritual-h">03 Ritual</a>
+    <a href="#sc-material-h">04 Material</a>
+    <a href="#sc-still-h">05 Still Life</a>
+    <a href="#sc-cta-h">06 Order</a>
+    <a href="index.html?tab=brand#projects">← Brand Systems</a>
+    <a href="index.html#hero">Home</a>
+  </nav>
+
+  <!-- Заглавната лента е премахната визуално.
+       h1 остава в документа — иначе страницата няма коренов възел. -->
+  <h1 class="sc-visually-hidden">Landing Page — Sable &amp; Co. · Atelier No. 02</h1>
+
+
+  <div class="demo-root">
+
+
+<!-- ─── NAV ─── -->
+<nav data-nav="" style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0; height: 68px; display: flex; align-items: center; justify-content: space-between; transition: background 320ms ease, box-shadow 320ms ease;">
+  <div style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 var(--space-lg, 2rem); display: flex; align-items: center; justify-content: space-between;">
+  <div style="display: flex; align-items: center; gap: 14px;">
+    <img loading="lazy" data-nav-logo="" src="images/landing-page-sable-co/01-primary-lockup.svg" alt="Sable &amp; Co." style="height: 28px; width: auto; transition: filter 320ms ease; filter: none;">
+
+  </div>
+  <a data-nav-cta="" href="#" data-demo-inert aria-disabled="true" title="Demo button — this showcase has no store" style="font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-linen); text-decoration: none; padding: 9px 20px; background: var(--color-terracotta); border: none; transition: all 320ms ease;" class="sbl-h0" class="sbl-h1" class="sbl-h2" class="sbl-h3" class="sbl-h4">Shop Now</a>
+  </div>
+</nav>
+
+<!-- ─── SECTION 1: HERO ─── -->
+<section id="sc-hero-h" style="position: relative; height: 100vh; min-height: 640px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+  <img width="1344" height="768" src="images/landing-page-sable-co/01-sable-candle-aroma.webp" alt="Sable &amp; Co. Linen Candle — ceramic vessel in warm light" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,21,16,0.74) 0%, rgba(30,21,16,0.22) 52%, rgba(30,21,16,0.06) 100%);"></div>
+  <div style="position: relative; z-index: 2; text-align: center; padding: 0 clamp(24px, 6vw, 80px); max-width: 780px; display: flex; flex-direction: column; align-items: center;">
+    <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-linen); margin: 0 0 22px; font-weight: 600;">Sable &amp; Co. — Atelier No. 02</p>
+    <h2 style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(56px, 9vw, 96px); letter-spacing: 0.04em; color: var(--color-linen); margin: 0 0 24px; line-height: 1.0; font-style: normal;">Linen Candle</h2>
+    <p style="font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(17px, 2.2vw, 23px); color: rgba(247,241,232,0.80); margin: 0 0 48px; line-height: 1.65; text-shadow: 0 2px 12px rgba(30,21,16,0.6);">Light it. Leave it.<br>Let the room change.</p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a href="#" data-demo-inert aria-disabled="true" title="Demo button — this showcase has no store" style="font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-linen); background: var(--color-terracotta); text-decoration: none; padding: 14px 32px; display: inline-block; transition: background 220ms ease;" class="sbl-h0" class="sbl-h1" class="sbl-h2" class="sbl-h3" class="sbl-h4">Shop Now</a>
+      <a href="#" data-demo-inert aria-disabled="true" title="Demo button — this showcase has no store" style="font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(247,241,232,0.9); background: transparent; border: 2px solid rgba(193,122,78,0.7); text-decoration: none; padding: 14px 32px; display: inline-block; transition: all 220ms ease;" class="sbl-h0" class="sbl-h1" class="sbl-h2" class="sbl-h3" class="sbl-h4">Discover the Ritual</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 2: VALUE PROPS ─── -->
+<section id="sc-value-h" style="background: var(--color-linen); padding: clamp(72px, 9vw, 112px) clamp(24px, 6vw, 80px);">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <p data-reveal="" style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-terracotta); text-align: center; margin: 0 0 60px; font-weight: 600; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease, transform 680ms ease;">Why Atelier No. 02</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px 48px; margin-bottom: 80px;">
+
+      <div data-reveal="" style="text-align: center; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease 80ms, transform 680ms ease 80ms;">
+        <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-stone); margin: 0 0 18px; font-weight: 600;">Burn Time</p>
+        <p style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(20px, 2.4vw, 26px); color: var(--color-anchor); margin: 0; line-height: 1.3;">Up to 45 hours<br>of slow light.</p>
+      </div>
+
+      <div data-reveal="" style="text-align: center; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease 180ms, transform 680ms ease 180ms;">
+        <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-stone); margin: 0 0 18px; font-weight: 600;">Material</p>
+        <p style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(20px, 2.4vw, 26px); color: var(--color-anchor); margin: 0; line-height: 1.3;">Unglazed ceramic,<br>thrown by hand.</p>
+      </div>
+
+      <div data-reveal="" style="text-align: center; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease 280ms, transform 680ms ease 280ms;">
+        <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-stone); margin: 0 0 18px; font-weight: 600;">Scent Profile</p>
+        <p style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(20px, 2.4vw, 26px); color: var(--color-anchor); margin: 0; line-height: 1.3;">Warm linen, dry cedar,<br>cold morning air.</p>
+      </div>
+
+    </div>
+    <div data-reveal="" style="text-align: center; padding-top: 64px; border-top: 2px solid var(--color-sand); opacity: 0; transform: translateY(24px); transition: opacity 680ms ease, transform 680ms ease;">
+      <blockquote style="font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(26px, 4vw, 46px); color: var(--color-anchor); margin: 0; line-height: 1.2; letter-spacing: 0.015em;">"Not a mood. A decision."</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 3: RITUAL ─── -->
+<section id="sc-ritual-h" id="ritual" data-sc="sc-ritual-h" style="background: var(--color-sand);">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));">
+
+    <div style="position: relative; min-height: clamp(360px, 60vw, 600px); overflow: hidden;">
+      <img width="896" height="1088" src="images/landing-page-sable-co/02-sable-candle-lit.webp" alt="Sable &amp; Co. Linen Candle — the lighting ritual" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 clamp(24px, 4vw, 48px) 48px; background: linear-gradient(transparent, rgba(30,21,16,0.6));">
+        <p style="font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(15px, 1.7vw, 18px); color: var(--color-linen); margin: 0; line-height: 1.65; text-align: center; text-shadow: 0 1px 10px rgba(0,0,0,0.55);">"The match. The pause. The rest is the room's."</p>
+      </div>
+    </div>
+
+    <div data-reveal="" style="padding: clamp(56px, 8vw, 96px) clamp(36px, 5.5vw, 72px); display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease, transform 680ms ease;">
+      <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-terracotta); margin: 0 0 20px; font-weight: 600;">The Ritual</p>
+      <h2 style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(26px, 3.2vw, 38px); color: var(--color-anchor); margin: 0; line-height: 1.15;">Three steps.<br>No instructions needed.</h2>
+      <div style="width: 2.5rem; height: 2px; background: var(--color-terracotta); margin: 20px 0 28px;"></div>
+      <p style="font-family: var(--font-sans); font-size: 15px; color: var(--color-stone); line-height: 1.75; margin: 0 max(24px, calc((100vw - 1200px) / 2)) 36px 0; font-weight: 400;">Strike. Hold the flame until the wax catches. Set it down. The candle does the rest — for up to 45 hours.</p>
+      <a href="#" data-demo-inert aria-disabled="true" title="Demo button — this showcase has no store" style="font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--color-terracotta); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--color-terracotta); padding-bottom: 2px; align-self: flex-start; transition: opacity 220ms ease;" class="sbl-h0" class="sbl-h1" class="sbl-h2" class="sbl-h3" class="sbl-h4">→ Shop Atelier No. 02</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SECTION 4: MATERIAL ─── -->
+<section id="sc-material-h" style="background: var(--color-anchor);">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));">
+
+    <div data-reveal="" style="padding: clamp(56px, 8vw, 96px) clamp(36px, 5.5vw, 72px) clamp(56px, 8vw, 96px) max(24px, calc((100vw - 1200px) / 2)); display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease, transform 680ms ease;">
+      <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-sand); margin: 0 0 20px; font-weight: 600;">Material</p>
+      <h2 style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(26px, 3.2vw, 38px); color: var(--color-linen); margin: 0; line-height: 1.15;">Ceramic. Not chosen<br>for aesthetics.</h2>
+      <div style="width: 2.5rem; height: 2px; background: var(--color-terracotta); margin: 20px 0 28px;"></div>
+      <p style="font-family: var(--font-sans); font-size: 15px; color: var(--color-sand); line-height: 1.75; margin: 0 0 40px; font-weight: 400;">Unglazed ceramic regulates heat differently than glass. The wax pools slowly, evenly. The vessel stays cool to the touch.</p>
+      <p style="font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(19px, 2.3vw, 24px); color: var(--color-linen); line-height: 1.4; margin: 0;">"Made to be used, not displayed."</p>
+    </div>
+
+    <div style="position: relative; min-height: clamp(340px, 56vw, 560px); overflow: hidden;">
+      <img width="1024" height="1024" src="images/landing-page-sable-co/03-sable-macro-shot.webp" alt="Sable &amp; Co. Linen Candle — macro shot of the wax and wick" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 clamp(24px, 4vw, 48px) 48px; background: linear-gradient(transparent, rgba(30,21,16,0.62));">
+        <p style="font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(14px, 1.6vw, 17px); color: var(--color-linen); margin: 0; line-height: 1.65; text-align: center; text-shadow: 0 1px 10px rgba(0,0,0,0.55);">"Every vessel is irregular. Intentionally."</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SECTION 5: STILL LIFE ─── -->
+<section id="sc-still-h" style="background: var(--color-linen);">
+  <div style="position: relative; height: 70vh; min-height: 460px; overflow: hidden;">
+    <img width="1024" height="1024" src="images/landing-page-sable-co/04-sable-candle-flatlay.webp" alt="Sable &amp; Co. Linen Candle — flatlay with a linen napkin" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+    <div style="position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(30,21,16,0.52) 100%);"></div>
+    <div data-reveal="" style="position: absolute; bottom: 0; left: 0; right: 0; padding: clamp(40px, 5vw, 72px) 24px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 680ms ease, transform 680ms ease;">
+      <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-linen); margin: 0 0 14px; font-weight: 600;">Atelier Collection</p>
+      <h2 style="font-family: var(--font-serif); font-weight: 300; font-size: clamp(24px, 3.5vw, 42px); color: var(--color-linen); margin: 0; line-height: 1.15;">The complete ritual,<br>on one surface.</h2>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 6: CLOSING CTA ─── -->
+<section id="sc-cta-h" style="position: relative; height: 100vh; min-height: 600px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+  <img width="896" height="1088" src="images/landing-page-sable-co/05-sable-candle-smoke.webp" alt="Sable &amp; Co. Linen Candle — smoke after the flame is put out" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+  <div style="position: absolute; inset: 0; background: rgba(30,21,16,0.54);"></div>
+  <div style="position: relative; z-index: 2; text-align: center; padding: 0 clamp(24px, 6vw, 80px); max-width: 720px; display: flex; flex-direction: column; align-items: center;">
+    <blockquote data-reveal="" style="font-family: var(--font-serif); font-style: italic; font-weight: 300; font-size: clamp(20px, 3vw, 36px); color: var(--color-linen); margin: 0 0 32px; line-height: 1.45; letter-spacing: 0.015em; opacity: 0; transform: translateY(24px); transition: opacity 680ms ease, transform 680ms ease;">"The ritual is complete<br>when the room remembers it."</blockquote>
+    <p style="font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-sand); margin: 0 0 44px; font-weight: 600;">Sable &amp; Co. — Atelier No. 02</p>
+    <div data-reveal="" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; opacity: 0; transform: translateY(20px); transition: opacity 680ms ease 160ms, transform 680ms ease 160ms;">
+      <a href="#" data-demo-inert aria-disabled="true" title="Demo button — this showcase has no store" style="font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-linen); background: var(--color-terracotta); text-decoration: none; padding: 14px 32px; display: inline-block; transition: background 220ms ease;" class="sbl-h0" class="sbl-h1" class="sbl-h2" class="sbl-h3" class="sbl-h4">Shop Now</a>
+      <a href="#" data-demo-inert aria-disabled="true" title="Demo button — this showcase has no store" style="font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(247,241,232,0.88); background: transparent; border: 2px solid rgba(247,241,232,0.45); text-decoration: none; padding: 14px 32px; display: inline-block; transition: all 220ms ease;" class="sbl-h0" class="sbl-h1" class="sbl-h2" class="sbl-h3" class="sbl-h4">Discover the Ritual</a>
+    </div>
+  </div>
+</section>
+
+  </div>
+
+  <script>
+  (function() {
+    /* Демонстрационни CTA бутони: href="#" би скочил в началото на страницата.
+       Витрината няма магазин — кликът не води наникъде, но и не мести скрола. */
+    document.querySelectorAll('[data-demo-inert]').forEach(el => {
+      el.addEventListener('click', e => e.preventDefault());
+    });
+  })();
+  </script>
+
+  <script>
+  (function() {
+const nav = document.querySelector('[data-nav]');
+    const navBrand = document.querySelector('[data-nav-brand]');
+    const navCta = document.querySelector('[data-nav-cta]');
+    const navLogo = document.querySelector('[data-nav-logo]');
+
+    const updateNav = () => {
+      const scrolled = true;
+      if (!nav) return;
+      nav.style.background = scrolled ? 'rgba(247,241,232,0.96)' : 'transparent';
+      nav.style.backdropFilter = scrolled ? 'blur(12px)' : 'none';
+      nav.style.webkitBackdropFilter = scrolled ? 'blur(12px)' : 'none';
+      nav.style.boxShadow = scrolled ? '0 1px 0 rgba(74,55,40,0.1)' : 'none';
+      if (navBrand) navBrand.style.color = scrolled ? '#4A3728' : '#F7F1E8';
+      if (navLogo) navLogo.style.filter = 'none';
+      if (navCta) {
+        navCta.style.color = '#F7F1E8';
+      }
+    };
+
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    const els = document.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(el => io.observe(el));
+  })();
+  </script>
+
+  <script>
+
+  /* ── Section Nav Scroll Spy ──────────────────────────── */
+  (function() {
+    const nav       = document.getElementById('sc-section-nav');
+    const indicator = document.getElementById('sc-nav-indicator');
+    const links     = Array.from(document.querySelectorAll('.sc-section-nav-link'));
+    const sections  = links.map(l => document.getElementById(l.dataset.section)).filter(Boolean);
+
+    function setActive(link) {
+      links.forEach(l => l.classList.remove('active'));
+      if (!link) { indicator.style.width = '0'; return; }
+      link.classList.add('active');
+
+      /* Позиция на индикатора спрямо nav (коректно при sticky) */
+      const navLeft = nav.getBoundingClientRect().left;
+      const lRect = link.getBoundingClientRect();
+      indicator.style.left  = (lRect.left - navLeft) + 'px';
+      indicator.style.width = lRect.width + 'px';
+
+      /* Хоризонтално центриране на активния линк в скролващия контейнер —
+         директно scrollLeft, без scrollIntoView (което може да скролне
+         документа вертикално и да породи scroll feedback loop). */
+      const scroller = document.querySelector('.sc-section-nav-links');
+      if (scroller) {
+        const sRect = scroller.getBoundingClientRect();
+        if (lRect.left < sRect.left || lRect.right > sRect.right) {
+          const offset = (lRect.left - sRect.left)
+                       - (sRect.width / 2) + (lRect.width / 2);
+          scroller.scrollLeft += offset;
+        }
+      }
+    }
+
+    let lockedLink = null;
+
+    function onScroll() {
+      const navH = nav.offsetHeight;
+      const trigger = navH + 120;
+      let current = null;
+
+      sections.forEach((sec, i) => {
+        const top = sec.getBoundingClientRect().top;
+        if (top <= trigger) current = links[i];
+      });
+
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        current = links[links.length - 1];
+      }
+
+      /* Ако има заключена от клик секция — държим я, докато скролът я достигне */
+      if (lockedLink) {
+        if (current === lockedLink) {
+          lockedLink = null;
+        } else {
+          setActive(lockedLink);
+          return;
+        }
+      }
+
+      if (current) setActive(current);
+    }
+
+    /* При клик — активираме веднага и заключваме до пристигане */
+    links.forEach(l => {
+      l.addEventListener('click', () => {
+        setActive(l);
+        lockedLink = l;
+      });
+    });
+
+    /* Ръчен скрол отключва */
+    function unlock() { lockedLink = null; }
+    window.addEventListener('wheel', unlock, { passive: true });
+    window.addEventListener('touchmove', unlock, { passive: true });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    /* Deep-link: ако URL сочи конкретна секция (#sc-voice-h), заключваме
+       я при зареждане докато anchor-скролът пристигне — иначе onScroll
+       хваща предишната секция заради trigger офсета. */
+
+    /* ── Стрелки: скачат между секциите на текущата страница ──
+       Не водят към други проекти. Позицията се чете от активния линк,
+       който scrollspy-ят вече поддържа. */
+    const prevBtn = document.querySelector('[data-sc-prev]');
+    const nextBtn = document.querySelector('[data-sc-next]');
+
+    function activeIndex() {
+      const i = links.findIndex(l => l.classList.contains('active'));
+      return i < 0 ? 0 : i;
+    }
+
+    function syncArrows() {
+      if (!prevBtn || !nextBtn) return;
+      const i = activeIndex();
+      prevBtn.setAttribute('aria-disabled', i <= 0 ? 'true' : 'false');
+      nextBtn.setAttribute('aria-disabled', i >= links.length - 1 ? 'true' : 'false');
+    }
+
+    function goTo(delta) {
+      const i = activeIndex() + delta;
+      if (i < 0 || i >= links.length) return;
+      links[i].click();
+      syncArrows();
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo(-1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(1));
+    window.addEventListener('scroll', syncArrows, { passive: true });
+    syncArrows();
+
+
+    /* Ре-синхронизация на индикатора: fonts/images/scale местят
+       offset-ите след първата инициализация. Без това индикаторът
+       остава на 0 ширина или на стара позиция при deep-link (#sc-…). */
+    function resyncIndicator() {
+      const a = links.find(l => l.classList.contains('active'));
+      if (a) setActive(a); else onScroll();
+    }
+    window.addEventListener('load', resyncIndicator);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(resyncIndicator);
+    }
+
+    (function initFromHash() {
+      const hash = window.location.hash;
+      if (!hash) { onScroll(); return; }
+      const target = links.find(l => '#' + l.dataset.section === hash);
+      if (target) {
+        setActive(target);
+        lockedLink = target;
+        let tries = 0;
+        const iv = setInterval(() => {
+          onScroll();
+          if (!lockedLink || ++tries > 12) clearInterval(iv);
+        }, 100);
+      } else {
+        onScroll();
+      }
+    })();
+  })();
+  
+  </script>
+
+  <!-- т.8 — landing hamburger вече отваря страничен drawer (hamburger.js), не dropdown -->
+  <script src="page-transition.js"></script>
+
+<script src="hamburger.js"></script>
+  <nav class="nav-bottom" aria-label="Mobile navigation">
+    <a href="index.html#projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Projects</a>
+    <a href="index.html#skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Services</a>
+    <a href="index.html#hero"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a href="index.html#value-prop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Why Me</a>
+    <a href="index.html#faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ</a>
+  </nav>
+</body>
+</html>
